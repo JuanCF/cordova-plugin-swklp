@@ -1,0 +1,14 @@
+{
+  "name": "cordova-plugin-swklp",
+  "version": "0.1.0",
+  "description": "Cordova Plugin for Sewoo KLP24",
+  "cordova": {
+    "id": "cordova-plugin-swklp",
+    "platforms": []
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Juan Carlos Flores",
+  "license": "ISC"
+}
