@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova.plugin.swklp" version="0.0.1" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+	<name>sewooklp</name>
+	<js-module name="sewooklp" src="www/sewooklp.js">
+		<clobbers target="cordova.plugins.sewooklp" />
+	</js-module>
+	<platform name="android">
+		<config-file parent="/*" target="res/xml/config.xml">
+			<feature name="sewooklp">
+				<param name="android-package" value="cordova.plugin.swklp.sewooklp" />
+			</feature>
+		</config-file>
+		<config-file parent="/*" target="AndroidManifest.xml"></config-file>
+		<framework custom="true" src="src/android/build.gradle" type="gradleReference" />
+		<source-file src="src/android/sewooklp.java" target-dir="src/cordova/plugin/swklp/sewooklp" />
+		<source-file src="src/android/libs/Sewoo_Android_1104.jar" target-dir="libs/" />
+	</platform>
+</plugin>

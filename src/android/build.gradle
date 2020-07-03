@@ -1,0 +1,15 @@
+buildscript {
+    repositories {
+        jcenter()
+        google()
+    }
+}
+
+repositories {
+    jcenter()
+    google()
+}
+
+dependencies {
+    implementation files('libs/Sewoo_Android_1104.jar')
+}
