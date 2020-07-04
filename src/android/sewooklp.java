@@ -2,6 +2,7 @@ package cordova.plugin.swklp;
 
 import java.util.Iterator;
 import java.util.Vector;
+import android.util.Log;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -30,9 +31,8 @@ public class sewooklp extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals("coolMethod")) {
-            String message = args.getString(0);
-            this.coolMethod(message, callbackContext);
+        if (action.equals("listPairedDevices")) {
+            this.listPairedDevices(callbackContext);
             return true;
         }else if(action.equals("setupBluetooth")){
 			this.bluetoothSetup();
@@ -41,13 +41,31 @@ public class sewooklp extends CordovaPlugin {
         return false;
     }
 
-    private void coolMethod(String message, CallbackContext callbackContext) {
-        if (message != null && message.length() > 0) {
-            callbackContext.success(message);
+    private void listPairedDevices(CallbackContext callbackContext) {
+		JSONArray pairedDevices = this.addPairedDevices();
+        if (pairedDevices.length() > 0) {
+            callbackContext.success(pairedDevices);
         } else {
-            callbackContext.error("Expected one non-empty string argument.");
+            callbackContext.error("Not Paired devices");
         }
     }
+
+	private JSONArray addPairedDevices()
+	{
+		BluetoothDevice pairedDevice;
+		Iterator<BluetoothDevice> iter = (mBluetoothAdapter.getBondedDevices()).iterator();
+		while(iter.hasNext())
+		{
+			pairedDevice = iter.next();
+			if(bluetoothPort.isValidAddress(pairedDevice.getAddress()))
+			{
+				remoteDevices.add(pairedDevice);
+				//adapter.add(pairedDevice.getName() +"\n["+pairedDevice.getAddress()+"] [Paired]");
+			}
+		}
+		JSONArray jsArray = new JSONArray(remoteDevices);
+		return jsArray;
+	}
 
 	private void clearBtDevData()
 	{
