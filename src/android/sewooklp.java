@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothClass.Device;
 import android.content.Intent;
 import android.content.IntentFilter;
 
