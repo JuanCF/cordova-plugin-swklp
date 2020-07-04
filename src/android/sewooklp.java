@@ -53,6 +53,7 @@ public class sewooklp extends CordovaPlugin {
 	private JSONArray addPairedDevices()
 	{
 		BluetoothDevice pairedDevice;
+		JSONArray jsonArray = new JSONArray();
 		Iterator<BluetoothDevice> iter = (mBluetoothAdapter.getBondedDevices()).iterator();
 		while(iter.hasNext())
 		{
@@ -61,10 +62,15 @@ public class sewooklp extends CordovaPlugin {
 			{
 				remoteDevices.add(pairedDevice);
 				//adapter.add(pairedDevice.getName() +"\n["+pairedDevice.getAddress()+"] [Paired]");
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("name", pairedDevice.getName());
+				jsonObject.put("address",pairedDevice.getAddress());
+				jsonArray.put(jsonObject);
+
 			}
 		}
-		JSONArray jsArray = new JSONArray(remoteDevices);
-		return jsArray;
+		//JSONArray jsArray = new JSONArray(remoteDevices);
+		return jsonArray;
 	}
 
 	private void clearBtDevData()
