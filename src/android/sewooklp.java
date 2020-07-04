@@ -22,6 +22,7 @@ import com.sewoo.request.android.RequestHandler;
 
 public class sewooklp extends CordovaPlugin {
 
+	private static final String TAG = "Sewoo Bluetooth Printer";
 	private static final int REQUEST_ENABLE_BT = 2;
 
 	private Vector<BluetoothDevice> remoteDevices;
@@ -62,14 +63,17 @@ public class sewooklp extends CordovaPlugin {
 			{
 				remoteDevices.add(pairedDevice);
 				//adapter.add(pairedDevice.getName() +"\n["+pairedDevice.getAddress()+"] [Paired]");
-				JSONObject jsonObject = new JSONObject();
-				jsonObject.put("name", pairedDevice.getName());
-				jsonObject.put("address",pairedDevice.getAddress());
-				jsonArray.put(jsonObject);
+				try{
+					JSONObject jsonObject = new JSONObject();
+					jsonObject.put("name", pairedDevice.getName());
+					jsonObject.put("address",pairedDevice.getAddress());
+					jsonArray.put(jsonObject);
+				}catch(JSONException ex){
+					Log.e(TAG, ex.getMessage(), ex);
+				}
 
 			}
 		}
-		//JSONArray jsArray = new JSONArray(remoteDevices);
 		return jsonArray;
 	}
 
