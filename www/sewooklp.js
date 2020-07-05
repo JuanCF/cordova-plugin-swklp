@@ -11,3 +11,7 @@ exports.listPairedDevices = function (arg0, success, error) {
 exports.connectToDevice = function (arg0, success, error) {
     exec(success, error, 'sewooklp', 'connectToDevice', [arg0]);
 };
+
+exports.disconnectFromDevice = function (arg0, success, error) {
+    exec(success, error, 'sewooklp', 'disconnectFromDevice', [arg0]);
+};

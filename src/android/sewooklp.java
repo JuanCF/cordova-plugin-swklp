@@ -31,6 +31,8 @@ public class sewooklp extends CordovaPlugin {
 	private BluetoothAdapter mBluetoothAdapter;
 	private BluetoothPort bluetoothPort;
 
+	private String lastConnAddr;
+
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if (action.equals("listPairedDevices")) {
@@ -47,7 +49,7 @@ public class sewooklp extends CordovaPlugin {
         return false;
     }
 
-	private void connectToDevice(String deviceMACAddress ,CallbackContext callbackContext){
+	private void connectToDevice(String deviceMACAddress, CallbackContext callbackContext){
 		cordova.getThreadPool().execute(new Runnable() {
           public void run() {
             try
@@ -55,9 +57,10 @@ public class sewooklp extends CordovaPlugin {
 				BluetoothDevice btDevice = mBluetoothAdapter.getRemoteDevice(deviceMACAddress);
 				bluetoothPort.connect(btDevice);
 				//bluetoothPort.connect(deviceMACAddress, true); // Register Bluetooth device
+				lastConnAddr = deviceMACAddress;
 				JSONObject connectionResult = new JSONObject();
 				connectionResult.put("name", btDevice.getName());
-				connectionResult.put("address",btDevice.getAddress());
+				connectionResult.put("address",deviceMACAddress);
 				connectionResult.put("connected", true);
 				callbackContext.success(connectionResult);
 			}
@@ -68,6 +71,24 @@ public class sewooklp extends CordovaPlugin {
 			}
           }
       });
+	}
+
+	private void disconnectFromDevice(CallbackContext callbackContext){
+		try
+		{
+			bluetoothPort.disconnect();
+			BluetoothDevice btDevice = mBluetoothAdapter.getRemoteDevice(lastConnAddr);
+			JSONObject disconnectionResult = new JSONObject();
+			disconnectionResult.put("name", btDevice.getName());
+			disconnectionResult.put("address",btDevice.getAddress());
+			disconnectionResult.put("connected", false);
+			callbackContext.success(disconnectionResult);
+		}
+		catch (Exception e)
+		{
+			Log.e(TAG, e.getMessage(), e);
+			callbackContext.error(e.getMessage());
+		}
 	}
 
     private void listPairedDevices(CallbackContext callbackContext) {
