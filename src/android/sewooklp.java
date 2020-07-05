@@ -39,9 +39,36 @@ public class sewooklp extends CordovaPlugin {
         }else if(action.equals("setupBluetooth")){
 			this.bluetoothSetup();
 			return true;
+		}else if(action.equals("connectToDevice")){
+			String deviceMACAddress = args.getString(0);
+			this.connectToDevice(deviceMACAddress,callbackContext);
+			return true;
 		}
         return false;
     }
+
+	private void connectToDevice(String deviceMACAddress ,CallbackContext callbackContext){
+		cordova.getThreadPool().execute(new Runnable() {
+          public void run() {
+            try
+			{
+				BluetoothDevice btDevice = mBluetoothAdapter.getRemoteDevice(deviceMACAddress);
+				bluetoothPort.connect(btDevice);
+				//bluetoothPort.connect(deviceMACAddress, true); // Register Bluetooth device
+				JSONObject connectionResult = new JSONObject();
+				connectionResult.put("name", btDevice.getName());
+				connectionResult.put("address",btDevice.getAddress());
+				connectionResult.put("connected", true);
+				callbackContext.success(connectionResult);
+			}
+			catch (Exception e)
+			{
+				Log.e(TAG, e.getMessage());
+				callbackContext.error(e.getMessage());
+			}
+          }
+      });
+	}
 
     private void listPairedDevices(CallbackContext callbackContext) {
 		JSONArray pairedDevices = this.addPairedDevices();

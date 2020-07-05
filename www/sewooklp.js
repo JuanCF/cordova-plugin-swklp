@@ -7,3 +7,7 @@ exports.setupBluetooth = function (arg0, success, error) {
 exports.listPairedDevices = function (arg0, success, error) {
     exec(success, error, 'sewooklp', 'listPairedDevices', [arg0]);
 };
+
+exports.connectToDevice = function (arg0, success, error) {
+    exec(success, error, 'sewooklp', 'connectToDevice', [arg0]);
+};
