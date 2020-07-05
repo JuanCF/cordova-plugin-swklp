@@ -11,7 +11,7 @@
 			</feature>
 		</config-file>
 		<config-file parent="/*" target="AndroidManifest.xml">
-			 <uses-permission android:name="android.permission.BLUETOOTH"/>
+			 <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 		</config-file>
 		<framework custom="true" src="src/android/build.gradle" type="gradleReference" />
 		<source-file src="src/android/sewooklp.java" target-dir="src/cordova/plugin/swklp/sewooklp" />
