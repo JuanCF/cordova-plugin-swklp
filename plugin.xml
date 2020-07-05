@@ -10,7 +10,9 @@
 				<param name="android-package" value="cordova.plugin.swklp.sewooklp" />
 			</feature>
 		</config-file>
-		<config-file parent="/*" target="AndroidManifest.xml"></config-file>
+		<config-file parent="/*" target="AndroidManifest.xml">
+			 <uses-permission android:name="android.permission.BLUETOOTH"/>
+		</config-file>
 		<framework custom="true" src="src/android/build.gradle" type="gradleReference" />
 		<source-file src="src/android/sewooklp.java" target-dir="src/cordova/plugin/swklp/sewooklp" />
 		<source-file src="src/android/libs/Sewoo_Android_1104.jar" target-dir="libs/" />
