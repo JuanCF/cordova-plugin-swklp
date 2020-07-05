@@ -45,6 +45,9 @@ public class sewooklp extends CordovaPlugin {
 			String deviceMACAddress = args.getString(0);
 			this.connectToDevice(deviceMACAddress,callbackContext);
 			return true;
+		}if(action.equals("disconnectFromDevice")){
+			this.disconnectFromDevice(callbackContext);
+			return true;
 		}
         return false;
     }
