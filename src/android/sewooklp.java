@@ -44,6 +44,7 @@ public class sewooklp extends CordovaPlugin {
 	private String lastConnAddr;
 	private ESCPOSPrinter posPtr;
 	private ChkPrinterStatus chkStatus;
+	private int sts;
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -68,10 +69,15 @@ public class sewooklp extends CordovaPlugin {
     }
 
 	private void printBulkData(String arg, CallbackContext callbackContext){
+	  posPtr = new ESCPOSPrinter("EUC-KR");
+	  chkStatus = new ChkPrinterStatus();
       cordova.getThreadPool().execute(new Runnable() {
           public void run() {
-			  posPtr = new ESCPOSPrinter("EUC-KR");
-			  chkStatus = new ChkPrinterStatus();
+			  sts = chkStatus.PrinterStatus(posPtr);
+			  if(sts != ESCPOSConst.LK_SUCCESS){
+				  callbackContext.error(sts);
+				  return;
+			  }
               try{
                 JSONObject obj = new JSONObject(arg);
                 JSONArray printableArray = obj.getJSONArray("printableObjects");
@@ -103,7 +109,7 @@ public class sewooklp extends CordovaPlugin {
 	private void printText(JSONObject obj, Boolean standalone, CallbackContext callbackContext) throws IOException, JSONException {
 	  String text = obj.getString("text");
 	  Integer align = obj.getInt ("align");
-	  posPtr.printText(text,align, LKPrint.LK_FNT_DEFAULT, LKPrint.LK_TXT_1WIDTH | LKPrint.LK_TXT_1HEIGHT);
+	  posPtr.printText(text, align, LKPrint.LK_FNT_DEFAULT, LKPrint.LK_TXT_1WIDTH | LKPrint.LK_TXT_1HEIGHT);
 	  if(standalone){
 		callbackContext.success("Text  sent to printer");
 	  }
