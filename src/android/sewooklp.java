@@ -44,6 +44,7 @@ public class sewooklp extends CordovaPlugin {
 	private String lastConnAddr;
 	private ESCPOSPrinter posPtr;
 	private ChkPrinterStatus chkStatus;
+	private Thread hThread;
 	private int sts;
 
     @Override
@@ -69,7 +70,7 @@ public class sewooklp extends CordovaPlugin {
     }
 
 	private void printBulkData(String arg, CallbackContext callbackContext){
-	  posPtr = new ESCPOSPrinter("EUC-KR");
+	  posPtr = new ESCPOSPrinter();
 	  chkStatus = new ChkPrinterStatus();
       cordova.getThreadPool().execute(new Runnable() {
           public void run() {
@@ -128,6 +129,9 @@ public class sewooklp extends CordovaPlugin {
 				connectionResult.put("name", btDevice.getName());
 				connectionResult.put("address",deviceMACAddress);
 				connectionResult.put("connected", true);
+				RequestHandler rh = new RequestHandler();
+				hThread = new Thread(rh);
+				hThread.start();
 				callbackContext.success(connectionResult);
 			}
 			catch (Exception e)
@@ -148,6 +152,8 @@ public class sewooklp extends CordovaPlugin {
 			disconnectionResult.put("name", btDevice.getName());
 			disconnectionResult.put("address",btDevice.getAddress());
 			disconnectionResult.put("connected", false);
+			if((hThread != null) && (hThread.isAlive()))
+				hThread.interrupt();
 			callbackContext.success(disconnectionResult);
 		}
 		catch (Exception e)
