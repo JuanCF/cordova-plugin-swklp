@@ -1,5 +1,7 @@
 package cordova.plugin.swklp;
 
+import cordova.plugin.jziot.util.ChkPrinterStatus;
+
 import java.util.Iterator;
 import java.util.Vector;
 import android.util.Log;
@@ -19,6 +21,10 @@ import android.content.IntentFilter;
 
 import com.sewoo.port.android.BluetoothPort;
 import com.sewoo.request.android.RequestHandler;
+import com.sewoo.jpos.command.ESCPOS;
+import com.sewoo.jpos.command.ESCPOSConst;
+import com.sewoo.jpos.printer.ESCPOSPrinter;
+import com.sewoo.jpos.printer.LKPrint;
 
 
 public class sewooklp extends CordovaPlugin {
@@ -32,6 +38,8 @@ public class sewooklp extends CordovaPlugin {
 	private BluetoothPort bluetoothPort;
 
 	private String lastConnAddr;
+	private ESCPOSPrinter posPtr;
+	private ChkPrinterStatus chkStatus;
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -45,11 +53,56 @@ public class sewooklp extends CordovaPlugin {
 			String deviceMACAddress = args.getString(0);
 			this.connectToDevice(deviceMACAddress,callbackContext);
 			return true;
-		}if(action.equals("disconnectFromDevice")){
+		}else if(action.equals("disconnectFromDevice")){
 			this.disconnectFromDevice(callbackContext);
 			return true;
-		}
+		}else if(action.equals("printBulkData")){
+            this.printBulkData(args.getString(0), callbackContext);
+            return true;
+        }
         return false;
+    }
+
+	private void printBulkData(String arg, CallbackContext callbackContext){
+      cordova.getThreadPool().execute(new Runnable() {
+          public void run() {
+			  posPtr = new ESCPOSPrinter("EUC-KR");
+			  chkStatus = new ChkPrinterStatus();
+              try{
+                JSONObject obj = new JSONObject(arg);
+                JSONArray printableArray = obj.getJSONArray("printableObjects");
+
+                Integer datalen = printableArray.length();
+
+                for (int i = 0; i < datalen; ++i){
+                  JSONObject printable = printableArray.getJSONObject(i);
+                  if(printable.has("text")){
+                    printText(printable, false, callbackContext);
+                  }
+                  if(printable.has("image")){
+                    //printBase64Image(printable,false,callbackContext);
+                  }
+                  if(printable.has("qrtext")){
+                    //printQR(printable,false,callbackContext);
+                  }
+                }
+              } catch (Exception e) {
+                    StringWriter sw = new StringWriter();
+                    PrintWriter pw = new PrintWriter(sw);
+                    e.printStackTrace(pw);
+                    callbackContext.error(sw.toString());
+              }
+          }
+      });
+    }
+
+	private void printText(JSONObject obj, Boolean standalone, CallbackContext callbackContext) throws IOException{
+	  String text = obj.getString("text");
+	  Integer align = obj.getInt ("align");
+	  posPtr.printText(text,align, LKPrint.LK_FNT_DEFAULT, LKPrint.LK_TXT_1WIDTH | LKPrint.LK_TXT_1HEIGHT);
+	  if(standalone){
+		callbackContext.success("Text  sent to printer");
+	  }
     }
 
 	private void connectToDevice(String deviceMACAddress, CallbackContext callbackContext){

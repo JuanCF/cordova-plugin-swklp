@@ -15,3 +15,7 @@ exports.connectToDevice = function (arg0, success, error) {
 exports.disconnectFromDevice = function (arg0, success, error) {
     exec(success, error, 'sewooklp', 'disconnectFromDevice', [arg0]);
 };
+
+exports.printBulkData = function(args, success, error) {
+	exec(success, error, 'sewooklp', "printBulkData", [args]);
+};

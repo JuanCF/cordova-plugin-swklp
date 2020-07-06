@@ -15,6 +15,7 @@
 		</config-file>
 		<framework custom="true" src="src/android/build.gradle" type="gradleReference" />
 		<source-file src="src/android/sewooklp.java" target-dir="src/cordova/plugin/swklp/sewooklp" />
+		<source-file src="src/android/util/ChkPrinterStatus.java" target-dir="src/cordova/plugin/swklp/sewooklp/util" />
 		<source-file src="src/android/libs/Sewoo_Android_1104.jar" target-dir="libs/" />
 	</platform>
 </plugin>
