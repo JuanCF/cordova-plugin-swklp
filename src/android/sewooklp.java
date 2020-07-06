@@ -2,9 +2,10 @@ package cordova.plugin.swklp;
 
 import cordova.plugin.jziot.util.ChkPrinterStatus;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.Vector;
-import android.util.Log;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -13,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothClass;
