@@ -1,6 +1,6 @@
 package cordova.plugin.swklp;
 
-import cordova.plugin.jziot.util.ChkPrinterStatus;
+import cordova.plugin.swklp.util.ChkPrinterStatus;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
