@@ -2,6 +2,8 @@ package cordova.plugin.swklp;
 
 import cordova.plugin.jziot.util.ChkPrinterStatus;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
