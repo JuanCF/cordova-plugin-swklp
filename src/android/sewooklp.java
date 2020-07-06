@@ -100,7 +100,7 @@ public class sewooklp extends CordovaPlugin {
       });
     }
 
-	private void printText(JSONObject obj, Boolean standalone, CallbackContext callbackContext) throws IOException{
+	private void printText(JSONObject obj, Boolean standalone, CallbackContext callbackContext) throws IOException, JSONException {
 	  String text = obj.getString("text");
 	  Integer align = obj.getInt ("align");
 	  posPtr.printText(text,align, LKPrint.LK_FNT_DEFAULT, LKPrint.LK_TXT_1WIDTH | LKPrint.LK_TXT_1HEIGHT);
