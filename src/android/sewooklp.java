@@ -98,7 +98,7 @@ public class sewooklp extends CordovaPlugin {
                     printBase64Image(printable,false,callbackContext);
                   }
                   if(printable.has("qrtext")){
-                    //printQR(printable,false,callbackContext);
+                    printQR(printable,false,callbackContext);
                   }
                 }
               } catch (Exception e) {
@@ -128,6 +128,14 @@ public class sewooklp extends CordovaPlugin {
 	  posPtr.printBitmap(mBitmap, LKPrint.LK_ALIGNMENT_CENTER);
 	  if(standalone){
 		callbackContext.success("Image sent to printer");
+	  }
+    }
+
+	private void printQR(JSONObject obj, Boolean standalone, CallbackContext callbackContext) throws IOException, JSONException{
+	  String qr = obj.getString("qrtext");
+	  posPtr.printQRCode(qr, qr.length(), 6, ESCPOSConst.LK_QRCODE_EC_LEVEL_L, ESCPOSConst.LK_ALIGNMENT_CENTER);
+	  if(standalone){
+		callbackContext.success("QR sent to print");
 	  }
     }
 
