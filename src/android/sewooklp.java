@@ -22,6 +22,9 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothClass;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 import com.sewoo.port.android.BluetoothPort;
 import com.sewoo.request.android.RequestHandler;
@@ -46,6 +49,7 @@ public class sewooklp extends CordovaPlugin {
 	private ChkPrinterStatus chkStatus;
 	private Thread hThread;
 	private int sts;
+	private Bitmap mBitmap;
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -91,7 +95,7 @@ public class sewooklp extends CordovaPlugin {
                     printText(printable, false, callbackContext);
                   }
                   if(printable.has("image")){
-                    //printBase64Image(printable,false,callbackContext);
+                    printBase64Image(printable,false,callbackContext);
                   }
                   if(printable.has("qrtext")){
                     //printQR(printable,false,callbackContext);
@@ -113,6 +117,17 @@ public class sewooklp extends CordovaPlugin {
 	  posPtr.printText(text, align, LKPrint.LK_FNT_DEFAULT, LKPrint.LK_TXT_1WIDTH | LKPrint.LK_TXT_1HEIGHT);
 	  if(standalone){
 		callbackContext.success("Text  sent to printer");
+	  }
+    }
+
+	private void printBase64Image(JSONObject obj, Boolean standalone, CallbackContext callbackContext) throws IOException, JSONException{
+	  String base64Img = obj.getString("image");
+	  String cleanImage = base64Img.replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
+	  byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
+	  mBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+	  posPtr.printBitmap(mBitmap, LKPrint.LK_ALIGNMENT_CENTER);
+	  if(standalone){
+		callbackContext.success("Image sent to printer");
 	  }
     }
 
