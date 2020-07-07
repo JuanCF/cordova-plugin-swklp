@@ -125,6 +125,7 @@ public class sewooklp extends CordovaPlugin {
 	  String cleanImage = base64Img.replace("data:image/png;base64,", "").replace("data:image/jpeg;base64,","");
 	  byte[] decodedString = Base64.decode(cleanImage, Base64.DEFAULT);
 	  mBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+	  posPtr.lineFeed(1);
 	  posPtr.printBitmap(mBitmap, LKPrint.LK_ALIGNMENT_CENTER);
 	  if(standalone){
 		callbackContext.success("Image sent to printer");
@@ -133,6 +134,7 @@ public class sewooklp extends CordovaPlugin {
 
 	private void printQR(JSONObject obj, Boolean standalone, CallbackContext callbackContext) throws IOException, JSONException{
 	  String qr = obj.getString("qrtext");
+	  posPtr.lineFeed(1);
 	  posPtr.printQRCode(qr, qr.length(), 6, ESCPOSConst.LK_QRCODE_EC_LEVEL_L, ESCPOSConst.LK_ALIGNMENT_CENTER);
 	  if(standalone){
 		callbackContext.success("QR sent to print");
