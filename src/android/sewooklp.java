@@ -74,7 +74,7 @@ public class sewooklp extends CordovaPlugin {
     }
 
 	private void printBulkData(String arg, CallbackContext callbackContext){
-	  posPtr = new ESCPOSPrinter("ASCII");
+	  posPtr = new ESCPOSPrinter("ISO8859_1");
 	  chkStatus = new ChkPrinterStatus();
       cordova.getThreadPool().execute(new Runnable() {
           public void run() {
