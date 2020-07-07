@@ -101,6 +101,8 @@ public class sewooklp extends CordovaPlugin {
                     printQR(printable,false,callbackContext);
                   }
                 }
+				posPtr.lineFeed(1);
+				callbackContext.success("Printed successfully");
               } catch (Exception e) {
                     StringWriter sw = new StringWriter();
                     PrintWriter pw = new PrintWriter(sw);
