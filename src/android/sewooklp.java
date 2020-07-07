@@ -99,7 +99,6 @@ public class sewooklp extends CordovaPlugin {
                   }
                   if(printable.has("qrtext")){
                     printQR(printable,false,callbackContext);
-					Thread.sleep(100);
                   }
                 }
               } catch (Exception e) {
