@@ -57,7 +57,7 @@ public class sewooklp extends CordovaPlugin {
             this.listPairedDevices(callbackContext);
             return true;
         }else if(action.equals("setupBluetooth")){
-			this.bluetoothSetup();
+			this.bluetoothSetup(true, callbackContext);
 			return true;
 		}else if(action.equals("connectToDevice")){
 			String deviceMACAddress = args.getString(0);
@@ -191,6 +191,7 @@ public class sewooklp extends CordovaPlugin {
 	}
 
     private void listPairedDevices(CallbackContext callbackContext) {
+		this.bluetoothSetup(false,callbackContext);
 		JSONArray pairedDevices = this.addPairedDevices();
         if (pairedDevices.length() > 0) {
             callbackContext.success(pairedDevices);
@@ -260,7 +261,7 @@ public class sewooklp extends CordovaPlugin {
 		remoteDevices = new Vector<BluetoothDevice>();
 	}
 
-	private void bluetoothSetup()
+	private void bluetoothSetup(Boolean standalone, CallbackContext callbackContext)
 	{
 		// Initialize
 		clearBtDevData();
@@ -269,7 +270,9 @@ public class sewooklp extends CordovaPlugin {
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 		if (mBluetoothAdapter == null)
 		{
-		    // Device does not support Bluetooth
+			if(standalone){
+				callbackContext.error("Device does not support Bluetooth");
+		  	}
 			return;
 		}
 		if (!mBluetoothAdapter.isEnabled())
@@ -278,6 +281,9 @@ public class sewooklp extends CordovaPlugin {
 
 			cordova.getActivity().startActivityForResult (enableBtIntent, REQUEST_ENABLE_BT);
 		    //startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+		}
+		if(standalone){
+			callbackContext.success("Device Bluetooth Configured");
 		}
 	}
 }
