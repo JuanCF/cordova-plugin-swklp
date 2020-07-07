@@ -98,6 +98,7 @@ public class sewooklp extends CordovaPlugin {
                     printBase64Image(printable,false,callbackContext);
                   }
                   if(printable.has("qrtext")){
+					Thread.sleep(100);
                     printQR(printable,false,callbackContext);
                   }
                 }
