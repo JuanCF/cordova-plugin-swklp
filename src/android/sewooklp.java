@@ -74,7 +74,7 @@ public class sewooklp extends CordovaPlugin {
     }
 
 	private void printBulkData(String arg, CallbackContext callbackContext){
-	  posPtr = new ESCPOSPrinter();
+	  posPtr = new ESCPOSPrinter("ASCII");
 	  chkStatus = new ChkPrinterStatus();
       cordova.getThreadPool().execute(new Runnable() {
           public void run() {
@@ -133,7 +133,6 @@ public class sewooklp extends CordovaPlugin {
 
 	private void printQR(JSONObject obj, Boolean standalone, CallbackContext callbackContext) throws IOException, JSONException{
 	  String qr = obj.getString("qrtext");
-	  Log.e(TAG, qr);
 	  posPtr.printQRCode(qr, qr.length(), 6, ESCPOSConst.LK_QRCODE_EC_LEVEL_L, ESCPOSConst.LK_ALIGNMENT_CENTER);
 	  if(standalone){
 		callbackContext.success("QR sent to print");
