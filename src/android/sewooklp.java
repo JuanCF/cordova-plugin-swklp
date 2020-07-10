@@ -69,6 +69,9 @@ public class sewooklp extends CordovaPlugin {
 		}else if(action.equals("printBulkData")){
             this.printBulkData(args.getString(0), callbackContext);
             return true;
+        }if(action.equals("printerIsAvailable")){
+            this.printerIsAvailable(args.getString(0), callbackContext);
+            return true;
         }
         return false;
     }
@@ -257,6 +260,14 @@ public class sewooklp extends CordovaPlugin {
 				return "AUDIO_VIDEO";
 			default:
 				return "unknown!";
+		}
+	}
+
+	private void printerIsAvailable(CallbackContext callbackContext){
+		if(this.isAvailable()){
+			callbackContext.success("Printer is available");
+		}else{
+			callbackContext.error("Printer is not available");
 		}
 	}
 
