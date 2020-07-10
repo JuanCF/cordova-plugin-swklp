@@ -74,6 +74,10 @@ public class sewooklp extends CordovaPlugin {
     }
 
 	private void printBulkData(String arg, CallbackContext callbackContext){
+	  if(!this.isAvailable()){
+		  callbackContext.error("Printer is not available");
+		  return;
+	  }
 	  posPtr = new ESCPOSPrinter("ISO8859_1");
 	  chkStatus = new ChkPrinterStatus();
       cordova.getThreadPool().execute(new Runnable() {
@@ -254,6 +258,10 @@ public class sewooklp extends CordovaPlugin {
 			default:
 				return "unknown!";
 		}
+	}
+
+	private boolean isAvailable(){
+		return mBluetoothAdapter != null && mBluetoothAdapter.isEnabled() && bluetoothPort.isConnected();
 	}
 
 	private void clearBtDevData()
