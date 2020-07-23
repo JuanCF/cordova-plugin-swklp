@@ -69,7 +69,7 @@ public class sewooklp extends CordovaPlugin {
 		}else if(action.equals("printBulkData")){
             this.printBulkData(args.getString(0), callbackContext);
             return true;
-        }if(action.equals("printerIsAvailable")){
+        }else if(action.equals("printerIsAvailable")){
             this.printerIsAvailable(args.getString(0), callbackContext);
             return true;
         }
